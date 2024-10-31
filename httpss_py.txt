@@ -1,0 +1,16 @@
+import http.server
+import socketserver
+import ssl
+
+PORT = 8080
+Handler = http.server.SimpleHTTPRequestHandler
+
+httpd = socketserver.TCPServer(("", PORT), Handler)
+
+# Obtener el certificado SSL/TLS de un proveedor de certificados de confianza
+certificate_path = "/path/to/certificate.crt"
+key_path = "/path/to/private.key"
+httpd.socket = ssl.wrap_socket(httpd.socket, certfile=certificate_path, keyfile=key_path, server_side=True)
+
+print("serving at port", PORT)
+httpd.serve_forever()
